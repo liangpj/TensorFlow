@@ -35,7 +35,6 @@ def linear(args, output_size, bias, bias_start=0.0, scope=None) :
     # Calculate the total size of arguments on dimension 1.
     total_arg_size  = 0
     shapes = [a.get_shape().as_list() for a in args]
-    print ("shapes ", shapes)
     for shape in shapes :
         if len(shape) != 2 :
             raise ValueError("Linear is expecting 2D arguments : %s" % str(shapes))
@@ -45,9 +44,8 @@ def linear(args, output_size, bias, bias_start=0.0, scope=None) :
         else:
             total_arg_size += shape[1]
 
-    print("total_args_size ", total_arg_size)
     # Now the computation.
-    with tf.variable_scope(scope or "Linear") :
+    with tf.variable_scope(scope or "Linear") : # 在这scope里,所有的variable都是共享的
         matrix = tf.get_variable("Matrix", [total_arg_size, output_size])
         if len(args) == 1:
             res = tf.matmul(args[0], matrix)
